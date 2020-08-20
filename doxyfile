@@ -1,0 +1,8 @@
+PROJECT_NAME = Strategus
+
+INPUT = src\Strategus\StrategusCore src\Strategus\StrategusCore\DataClasses
+FILE_PATTERNS = *.h *.cpp
+
+OUTPUT_DIRECTORY = docs\doxygen
+
+HIDE_COMPOUND_REFERENCE = NO
