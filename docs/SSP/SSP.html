@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	
+	<body>
+		<h1>SSP specs</h1>
+		<p>SSP is built on top of TCP.</p>
+		
+		<h3>Packet format</h3>
+		<p>
+			First two bytes of the packet make up the header of the packet. First byte designates packet category, the second specific command of that category. Following two bytes contain the size of the payload in bytes.
+		</p>
+		
+		<h3>Category 0x00: Command and control</h3>
+		<p>These commands allow the server to control the client.</p>
+		<table>
+			<tr>
+				<th>Command ID</th><th>Name</th><th>Description</th><th>Payload</th>
+			</tr>
+			<tr>
+				<td>0x00</td><td>Positive</td><td>Positive response.</td><td>None</td>
+			</tr>
+			<tr>
+				<td>0x01</td><td>Negative</td><td>Negative response.</td><td>None</td>
+			</tr>
+		</table>
+		
+		<h3>Category 0x01: Task and job transmission</h3>
+		<p>These commands are used to deliver tasks to the client and the results back to the server.</p>
+		<table>
+			<tr>
+				<th>Command ID</th><th>Name</th><th>Description</th><th>Payload</th>
+			</tr>
+			<tr>
+				<td>0x00</td>
+				<td>Task request</td>
+				<td>Used by the client to request a new task from the server.</td>
+				<td><ul>
+					<li>First byte contains number of flags that follow.</li>
+					<li>Client's flags, each 8 bytes, sorted as ascending uint64.</li>
+				</ul></td>
+			</tr>
+			<tr>
+				<td>0x01</td>
+				<td>Task assignment</td>
+				<td>Contains info about the task assigned to the client.</td>
+				<td>TaskInfo object (variable size).</td>
+			</tr>
+			<tr>
+				<td>0x02</td>
+				<td>Job files request</td>
+				<td>Used by the client to request files for a job.</td>
+				<td>Job ID (4 bytes).</td>
+			</tr>
+			<tr>
+				<td>0x03</td>
+				<td>Job files sent</td>
+				<td>Sent by the server after all job files have been transmitted.</td>
+				<td>File count (4 bytes).</td>
+			</tr>
+			<tr>
+				<td>0x04</td>
+				<td>Task files request</td>
+				<td>Used by the client to request files for a task.</td>
+				<td>Task ID (8 bytes).</td>
+			</tr>
+			<tr>
+				<td>0x05</td>
+				<td>Task files sent</td>
+				<td>Sent by the server after all task files have been transmitted.</td>
+				<td>File count (4 bytes).</td>
+			</tr>
+			<tr>
+				<td>0x06</td>
+				<td>Task finished</td>
+				<td>Sent by the client after a task has finished execution.</td>
+				<td>Task ID (8 bytes).</td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -165,7 +165,7 @@ saveStatus(File* jobStatus)</y:MethodLabel>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="57.45361328125" x="92.273193359375" xml:space="preserve" y="26.701171875">TaskInfo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
           <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="DataClass" use3DEffect="true">
-            <y:AttributeLabel xml:space="preserve">ID: longID_t
+            <y:AttributeLabel xml:space="preserve">ID: doubleID_t
 name: string
 command: string
 inputFiles: string[]

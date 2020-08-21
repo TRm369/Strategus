@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PacketTests.cpp" />
     <ClCompile Include="StrategusCoreTest.cpp" />
     <ClCompile Include="TaskInfoTests.cpp" />
   </ItemGroup>
