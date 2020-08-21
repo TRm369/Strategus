@@ -142,12 +142,14 @@
     <ClInclude Include="DataClasses\TaskInfo.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="IMemoryManager.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="SSP\SSP_Packet.h" />
     <ClInclude Include="SSP\SSP_PacketFactory.h" />
     <ClInclude Include="TaskInfoFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataClasses\TaskInfo.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="SSP\SSP_Packet.cpp" />
     <ClCompile Include="SSP\SSP_PacketFactory.cpp" />
     <ClCompile Include="TaskInfoFactory.cpp" />
