@@ -5,22 +5,19 @@
 #define DLLexport __declspec(dllexport)
 
 //Class for internal functionality. Allows to hide all of internal headers and expose just the relevant interface.
-class StrategusClientInternal;
+class ClientManager;
 
-/// C++ interface
+/// C++ interface for the client
 class DLLexport StrategusClient {
 public:
-	///Initializes the client.
-	///<param name="configFilePath">Path to a file containing config information.</param>
-	///<returns>Returns true if initialization was successful.</returns>
-	bool initialize(std::string configFilePath);
-
-	///Connects the client to a server
-	///<returns>Returns true if connection was made successfully.</returns>
-	bool connectToServer(std::string hostname);
+	/// Starts the client.
+	/// <param name="configFileName">Path to configuration file for the client.</param>
+	/// <param name="serverHostname">Hostname of the server to connect to.</param>
+	/// <returns>Returns 0 if initialization was successful, 1 if reading config failed and 2 if connection to server failed.</returns>
+	int startClient(std::string configFileName, std::string serverHostname);
 
 	///Shutdowns the client.
 	void shutdown();
 private:
-	StrategusClientInternal* intern;
+	ClientManager* man;
 };

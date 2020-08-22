@@ -1,5 +1,9 @@
 #pragma once
 
+//Operating system flag
+#define OS_WINDOWS
+//#define OS_LINUX
+
 //Uint types
 typedef unsigned char uint8;
 typedef unsigned short uint16;

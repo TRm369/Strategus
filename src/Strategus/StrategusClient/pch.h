@@ -9,6 +9,9 @@
 
 // add headers that you want to pre-compile here
 #include <string>
+#include <vector>
+#include "../StrategusCore/Definitions.h"
+#include "../StrategusCore/Log.h"
 #include "boost/property_tree/ptree.hpp"
 #include "boost/property_tree/info_parser.hpp"
 #include "boost/foreach.hpp"

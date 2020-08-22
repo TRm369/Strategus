@@ -5,11 +5,12 @@
 
 namespace pt = boost::property_tree;
 
-std::vector<uint64> Config::flags;
-
-void Config::readConfig(std::string& fileName) {
+Config::Config(std::string fileName) {
 	pt::ptree tree;
 	pt::read_info(fileName, tree);
+
+	//Read values
+	availableSlots = tree.get<uint32>("availableSlots");
 
 	//Read flags
 	BOOST_FOREACH(pt::ptree::value_type& val, tree.get_child("flags")) {

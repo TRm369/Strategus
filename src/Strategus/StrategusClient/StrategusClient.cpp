@@ -1,15 +1,13 @@
 #include "pch.h"
 #include "StrategusClient.h"
-#include "StrategusClientInternal.h"
 
-bool StrategusClient::initialize(std::string configFilePath) {
-    return intern->initialize(configFilePath);
-}
-
-bool StrategusClient::connectToServer(std::string hostname) {
-    return intern->connectToServer(hostname);
+int StrategusClient::startClient(std::string configFileName, std::string serverHostname) {
+	//TODO: read config
+	//TODO: create connection to server
+	//TODO: initialize ClientManager
+	return 3;
 }
 
 void StrategusClient::shutdown() {
-    intern->shutdown();
+	//TODO: shutdown ClientManager
 }
