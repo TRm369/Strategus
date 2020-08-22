@@ -73,8 +73,13 @@ bool WindowsProcess::execute(std::string command) {
 	}
 }
 
+//Win docs: https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess
 bool WindowsProcess::isRunning() {
-	return true;
+	DWORD exitCode;
+	BOOL success = GetExitCodeProcess(piProcInfo.hProcess, &exitCode);
+	if (!success)
+		return false;
+	return exitCode == STILL_ACTIVE;
 }
 
 WindowsProcess::~WindowsProcess() {

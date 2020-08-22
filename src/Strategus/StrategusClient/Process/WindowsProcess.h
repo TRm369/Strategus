@@ -9,6 +9,8 @@ public:
 	bool execute(std::string command);
 
 	/// Returns true if the subprocess is running.
+	/// 
+	/// In case the status can't be retrieved, returns false.
 	bool isRunning();
 
 	~WindowsProcess();

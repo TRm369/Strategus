@@ -24,5 +24,14 @@ public:
 		std::getline(file, line);
 		Assert::IsTrue(line == "Hello world");		
 	}
+
+	TEST_METHOD(IsRunning) {
+		WindowsProcess prc;
+		Assert::IsTrue(prc.isRunning() == false);
+		Assert::IsTrue(prc.execute("timeout /t 1"));
+		Assert::IsTrue(prc.isRunning());
+		Sleep(1200);
+		Assert::IsTrue(prc.isRunning() == false);
+	}
 };
 }
