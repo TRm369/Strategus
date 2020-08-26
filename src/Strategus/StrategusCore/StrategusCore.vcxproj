@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="DataClasses\TaskInfo.h" />
     <ClInclude Include="Definitions.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="IMemoryManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="SSP\SSP_Packet.h" />
@@ -150,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataClasses\TaskInfo.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="SSP\SSP_Packet.cpp" />
     <ClCompile Include="SSP\SSP_PacketFactory.cpp" />

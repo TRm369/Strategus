@@ -41,3 +41,8 @@ const char* TaskInfo::getOutputFile(uint16 fileIndex) {
 uint32 TaskInfo::getSize() {
 	return size;
 }
+
+doubleID_t TaskInfo::IDfromJobAndTask(ID_t jobID, ID_t taskID) {
+	return ((doubleID_t)jobID << 32) + taskID;
+}
+

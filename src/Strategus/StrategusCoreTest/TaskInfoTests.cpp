@@ -8,8 +8,8 @@ bool test_createTaskInfo() {
 	doubleID_t id = 0x10B00000B00B1E50;
 	const char* name = "taskName";
 	const char* command = "command";
-	const char** inFiles = new const char*[] { "inFile1", "inFile2" };
-	const char** outFiles = new const char* [] { "outFile1", "outFile2" };
+	const char** inFiles = new const char*[2] { "inFile1", "inFile2" };
+	const char** outFiles = new const char* [2] { "outFile1", "outFile2" };
 
 	TaskInfo* ti = tif.createTaskInfo(id, name, command, 2, inFiles, 2, outFiles);
 
@@ -85,8 +85,8 @@ bool test_memcpyTaskInfo() {
 	doubleID_t id = 0x10B00000B00B1E50;
 	const char* name = "taskName";
 	const char* command = "command";
-	const char** inFiles = new const char* [] { "inFile1", "inFile2" };
-	const char** outFiles = new const char* [] { "outFile1", "outFile2" };
+	const char** inFiles = new const char* [2] { "inFile1", "inFile2" };
+	const char** outFiles = new const char* [2] { "outFile1", "outFile2" };
 
 	TaskInfo* tiOrig = tif.createTaskInfo(id, name, command, 2, inFiles, 2, outFiles);
 	TaskInfo* ti = (TaskInfo*)(new uint8[tiOrig->getSize()]);
