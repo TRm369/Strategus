@@ -5,7 +5,7 @@
 #ifdef OS_WINDOWS
 #include "WindowsProcess.h"
 
-bool WindowsProcess::execute(std::string command) {
+bool WindowsProcess::execute(const std::string& command, const std::string& directory) {
 	//Setup for starting child process
 	SECURITY_ATTRIBUTES saAttr;
 	saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -31,13 +31,23 @@ bool WindowsProcess::execute(std::string command) {
 	// Create the child process.
 
 	//Setup
+	STARTUPINFO siStartInfo;
+	BOOL bSuccess = FALSE;
 	//start the command with the cmd executable so that the complete process is "cmd.exe /c [command]"
 	std::string fullCmd = "C:\\Windows\\System32\\cmd.exe /c " + command;
 	size_t length = fullCmd.length();
 	TCHAR* wideCommand = new TCHAR[length+1];
 	mbstowcs_s(nullptr, wideCommand, length+1, fullCmd.c_str(), length);
-	STARTUPINFO siStartInfo;
-	BOOL bSuccess = FALSE;
+	// Prepare directory string
+	// If directory is empty, use parents
+	TCHAR* wideDirectory;
+	if (directory.empty())
+		wideDirectory = NULL;
+	else {
+		length = directory.length();
+		wideDirectory = new TCHAR[length + 1];
+		mbstowcs_s(nullptr, wideDirectory, length + 1, directory.c_str(), length);
+	}
 
 	// Set up members of the PROCESS_INFORMATION structure. 
 	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
@@ -59,9 +69,13 @@ bool WindowsProcess::execute(std::string command) {
 		TRUE,          // handles are inherited 
 		0,             // creation flags 
 		NULL,          // use parent's environment 
-		NULL,          // use parent's current directory 
+		wideDirectory, // use directory passed as argument
 		&siStartInfo,  // STARTUPINFO pointer 
 		&piProcInfo);  // receives PROCESS_INFORMATION
+
+	//Clean-up
+	delete[] wideCommand;
+	delete[] wideDirectory;
 
 	if (!bSuccess)
 		return false;
@@ -80,6 +94,11 @@ bool WindowsProcess::isRunning() {
 	if (!success)
 		return false;
 	return exitCode == STILL_ACTIVE;
+}
+
+bool WindowsProcess::kill() {
+	//TODO: implement
+	return true;
 }
 
 WindowsProcess::~WindowsProcess() {

@@ -10,6 +10,9 @@ public:
 	///Returns ID of the job this task belongs to.
 	ID_t getJobID();
 
+	/// Returns the full ID of the task.
+	doubleID_t getFullID();
+
 	///Returns task's name.
 	const char* getName();
 

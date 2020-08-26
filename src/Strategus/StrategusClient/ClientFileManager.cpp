@@ -50,3 +50,8 @@ void ClientFileManager::removeJobData(ID_t jobID) {
 	std::string dir = getJobDirectory(jobID);
 	remove(dir);
 }
+
+bool ClientFileManager::checkTaskFile(doubleID_t taskID, const std::string& fileName) {
+	std::string filePath = getTaskDirectory(taskID) + "/" + fileName;
+	return fileExists(filePath);
+}

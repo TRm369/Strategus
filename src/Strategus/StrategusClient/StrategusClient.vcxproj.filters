@@ -39,6 +39,9 @@
     <ClInclude Include="ClientFileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -59,13 +62,13 @@
     <ClCompile Include="Process\WindowsProcess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\ProcessTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClientFileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

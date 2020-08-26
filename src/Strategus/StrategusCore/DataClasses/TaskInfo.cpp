@@ -8,6 +8,10 @@ ID_t TaskInfo::getJobID() {
 	return SECOND_ID(ID);
 }
 
+doubleID_t TaskInfo::getFullID() {
+	return ID;
+}
+
 const char* TaskInfo::getName() {
 	return name;
 }

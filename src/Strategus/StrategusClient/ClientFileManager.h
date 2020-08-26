@@ -22,6 +22,13 @@ public:
 
 	/// Removes data associated with a job and all its tasks.
 	void removeJobData(ID_t jobID);
+
+	/// Checks if a file exists in task's data.
+	/// <param name="taskID">ID of the task</param>
+	/// <param name="fileName">Name of the file (without directories).</param>
+	/// <returns>True iff the file exists.</returns>
+	bool checkTaskFile(doubleID_t taskID, const std::string& fileName);
+
 private:
 	//Root directory
 	std::string rootDir;
