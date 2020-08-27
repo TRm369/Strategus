@@ -39,6 +39,9 @@ public:
 
 	///Returns the size of this object (including all data appended to it).
 	uint32 getSize();
+
+	/// Recalculates all pointers after the object has been moved to a different address in memory
+	void recalculatePointers();
 	
 	/// Creates a doubleID from separate job and task ID.
 	static doubleID_t IDfromJobAndTask(ID_t jobID, ID_t taskID);

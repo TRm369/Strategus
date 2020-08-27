@@ -5,15 +5,12 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrategusCore", "StrategusCore\StrategusCore.vcxproj", "{8F1FCA43-C680-41E5-87D1-290528BB9227}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrategusCoreTest", "StrategusCoreTest\StrategusCoreTest.vcxproj", "{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8F1FCA43-C680-41E5-87D1-290528BB9227} = {8F1FCA43-C680-41E5-87D1-290528BB9227}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrategusClient", "StrategusClient\StrategusClient.vcxproj", "{35E17AD1-9DD9-4288-908D-95F32D59779C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8F1FCA43-C680-41E5-87D1-290528BB9227} = {8F1FCA43-C680-41E5-87D1-290528BB9227}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StrategusCoreTests", "StrategusCoreTests\StrategusCoreTests.vcxproj", "{23546F72-CFF2-41ED-83C1-45A33C26050B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +28,6 @@ Global
 		{8F1FCA43-C680-41E5-87D1-290528BB9227}.Release|x64.Build.0 = Release|x64
 		{8F1FCA43-C680-41E5-87D1-290528BB9227}.Release|x86.ActiveCfg = Release|Win32
 		{8F1FCA43-C680-41E5-87D1-290528BB9227}.Release|x86.Build.0 = Release|Win32
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Debug|x64.ActiveCfg = Debug|x64
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Debug|x64.Build.0 = Debug|x64
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Debug|x86.ActiveCfg = Debug|Win32
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Debug|x86.Build.0 = Debug|Win32
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Release|x64.ActiveCfg = Release|x64
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Release|x64.Build.0 = Release|x64
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Release|x86.ActiveCfg = Release|Win32
-		{EB17EF48-AE82-4DEC-BAD6-C2C4F214249A}.Release|x86.Build.0 = Release|Win32
 		{35E17AD1-9DD9-4288-908D-95F32D59779C}.Debug|x64.ActiveCfg = Debug|x64
 		{35E17AD1-9DD9-4288-908D-95F32D59779C}.Debug|x64.Build.0 = Debug|x64
 		{35E17AD1-9DD9-4288-908D-95F32D59779C}.Debug|x86.ActiveCfg = Debug|Win32
@@ -47,6 +36,14 @@ Global
 		{35E17AD1-9DD9-4288-908D-95F32D59779C}.Release|x64.Build.0 = Release|x64
 		{35E17AD1-9DD9-4288-908D-95F32D59779C}.Release|x86.ActiveCfg = Release|Win32
 		{35E17AD1-9DD9-4288-908D-95F32D59779C}.Release|x86.Build.0 = Release|Win32
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Debug|x64.ActiveCfg = Debug|x64
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Debug|x64.Build.0 = Debug|x64
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Debug|x86.ActiveCfg = Debug|Win32
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Debug|x86.Build.0 = Debug|Win32
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Release|x64.ActiveCfg = Release|x64
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Release|x64.Build.0 = Release|x64
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Release|x86.ActiveCfg = Release|Win32
+		{23546F72-CFF2-41ED-83C1-45A33C26050B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
