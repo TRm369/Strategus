@@ -14,4 +14,10 @@ public:
 
 	///Number of (single-slot) tasks that can be executed in parallel
 	uint32 availableSlots;
+
+	/// Time period of checking task status
+	uint32 pollRate;
+
+	/// Directory for storing client's data
+	std::string rootDirectory;
 };

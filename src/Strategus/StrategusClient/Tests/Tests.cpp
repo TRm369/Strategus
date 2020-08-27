@@ -9,11 +9,49 @@
 #include "../../StrategusCore/Utils.h"
 #include "../Process/WindowsProcess.h"
 #include <fstream>
+#include "../ClientManager.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace fs = std::filesystem;
 
 namespace ClientTests {
+
+class DummyConnection : public IClientConnection{
+public:
+	IMemoryManager* memMan;
+	TaskInfoFactory tif;
+	int taskCount = 0;
+	const char** cmds = new const char* [8] {"echo done>out0.txt", "echo done>out1.txt", "echo done>out2.txt", "echo done>out3.txt", "echo done>out4.txt", "echo done>out5.txt", "echo done>out6.txt", "echo done>out7.txt"};
+	bool done[8];
+
+	DummyConnection() : memMan(new DummyMemoryManager()), tif(memMan) {}
+
+	bool connect(std::string& hostname) {
+		return true;
+	}
+
+	TaskInfo* requestTask(std::vector<uint64>& flags) {
+		if (taskCount >= 8)
+			return nullptr;
+		TaskInfo* ti = tif.createTaskInfo(taskCount, "", cmds[taskCount], 0, nullptr, 0, nullptr);
+		taskCount++;
+		return ti;
+	}
+
+	bool reportTaskFinished(TaskInfo* task) {
+		done[task->getTaskID()] = true;
+		tif.destroyTaskInfo(task);
+		return true;
+	}
+
+	bool verifyAllDone() {
+		bool ok = true;
+		for (int i = 0; i < 8; i++) {
+			ok &= done[i];
+		}
+		return ok;
+	}
+};
 
 TEST_CLASS(ConfigTests) {
 public:
@@ -143,6 +181,20 @@ public:
 		Assert::IsTrue(prc.execute("echo Hello world> out.txt", "./prcDir"));
 		Sleep(10);
 		Assert::IsTrue(fs::exists("./prcDir/out.txt"));
+	}
+};
+
+TEST_CLASS(ClientManagerTests) {
+	TEST_METHOD(TasksExecute) {
+		fs::remove_all(".\\client\\data\\0");
+		Config cfg = Config("strategus.cfg");
+		DummyConnection* conn = new DummyConnection();
+		ClientManager cm(&cfg, conn);
+
+		cm.start();
+		Sleep(5000);
+		cm.stop();
+		Assert::IsTrue(conn->verifyAllDone());
 	}
 };
 }

@@ -46,6 +46,10 @@ bool Task::verifyOutputFiles() {
 	return verified;
 }
 
+TaskInfo* Task::getTaskInfo() {
+	return taskInfo;
+}
+
 Task::~Task() {
 	//If there's a process associated with this task, kill it and delete the object
 	if (proc != nullptr) {

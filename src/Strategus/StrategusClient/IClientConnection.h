@@ -24,6 +24,4 @@ public:
 	/// <param name="task">TaskInfo of task that was completed.</param>
 	/// <returns>Returns true if task was submitted successfully.</returns>
 	virtual bool reportTaskFinished(TaskInfo* task) = 0;
-
-	virtual ~IClientConnection() = 0;
 };

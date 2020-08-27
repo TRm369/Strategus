@@ -11,6 +11,8 @@ Config::Config(std::string fileName) {
 
 	//Read values
 	availableSlots = tree.get<uint32>("availableSlots");
+	pollRate = tree.get<uint32>("pollRate");
+	rootDirectory = tree.get<std::string>("rootDirectory");
 
 	//Read flags
 	BOOST_FOREACH(pt::ptree::value_type& val, tree.get_child("flags")) {

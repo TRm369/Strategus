@@ -22,6 +22,9 @@ public:
 	/// Returns true if all output files are present.
 	bool verifyOutputFiles();
 
+	/// Returns task's TaskInfo
+	TaskInfo* getTaskInfo();
+
 	~Task();
 
 private:
