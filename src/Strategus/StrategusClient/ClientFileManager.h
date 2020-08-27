@@ -4,7 +4,8 @@
 
 /// Class handling storage of job and task files and corresponding directories.
 /// Functions throw errors when unable to create required directories.
-class ClientFileManager : FileManager {
+/// Functions returning paths use system's preffered seperator ('\' for win, '/' for linux)
+class ClientFileManager : public FileManager {
 public:
 	/// Constructor. rootDirectory is the directory in which data is stored.
 	ClientFileManager(std::string rootDirectory);

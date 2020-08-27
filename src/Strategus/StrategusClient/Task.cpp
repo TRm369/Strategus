@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Task.h"
 #include "../StrategusCore/Utils.h"
-#include <stdexcept>
 
 #ifdef OS_WINDOWS
 #include "Process/WindowsProcess.h"

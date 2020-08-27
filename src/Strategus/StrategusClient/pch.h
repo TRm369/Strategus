@@ -10,6 +10,7 @@
 // add headers that you want to pre-compile here
 #include <string>
 #include <vector>
+#include <stdexcept>
 #include "../StrategusCore/Definitions.h"
 #include "../StrategusCore/Log.h"
 #include "boost/property_tree/ptree.hpp"

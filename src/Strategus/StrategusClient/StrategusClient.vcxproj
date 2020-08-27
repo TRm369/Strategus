@@ -134,7 +134,7 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /S "$(ProjectDir)testData\*" "$(TargetDir)"  </Command>
+      <Command>xcopy /Y /S "$(ProjectDir)Tests\*" "$(TargetDir)"  </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,7 +179,6 @@
     </ClCompile>
     <ClCompile Include="StrategusClient.cpp" />
     <ClCompile Include="Task.cpp" />
-    <ClCompile Include="Tests\ConfigTests.cpp" />
     <ClCompile Include="Process\WindowsProcess.cpp" />
     <ClCompile Include="Tests\Tests.cpp" />
   </ItemGroup>

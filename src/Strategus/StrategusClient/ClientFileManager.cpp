@@ -1,8 +1,10 @@
-#include <stdexcept>
 #include "pch.h"
 #include "ClientFileManager.h"
+#include <filesystem>
 
-#define DATA_SUBDIR "/data"
+namespace fs = std::filesystem;
+#define SEPARATOR ((char)fs::path::preferred_separator)
+#define DATA_DIR "data"
 
 ClientFileManager::ClientFileManager(std::string rootDirectory) {
 	rootDir = rootDirectory;
@@ -14,7 +16,7 @@ ClientFileManager::ClientFileManager(std::string rootDirectory) {
 			throw std::invalid_argument("Root directory for ClinetFileManager doesn't exist and can't be created.");
 
 	//Create data directory
-	dataDir = rootDir + DATA_SUBDIR;
+	dataDir = rootDir + SEPARATOR + DATA_DIR;
 	if (!directoryExists(dataDir))
 		if (!createDirectory(dataDir))
 			//It can't be created
@@ -23,7 +25,7 @@ ClientFileManager::ClientFileManager(std::string rootDirectory) {
 }
 
 std::string ClientFileManager::getJobDirectory(ID_t jobID) {
-	std::string dir = dataDir + "/" + std::to_string(jobID);
+	std::string dir = dataDir + SEPARATOR + std::to_string(jobID);
 	if (!directoryExists(dir))
 		if (!createDirectory(dir))
 			throw std::exception("Can't create directory for a job.");
@@ -32,7 +34,7 @@ std::string ClientFileManager::getJobDirectory(ID_t jobID) {
 }
 
 std::string ClientFileManager::getTaskDirectory(doubleID_t taskID) {
-	std::string dir = getJobDirectory(SECOND_ID(taskID)) + "/" + std::to_string(FIRST_ID(taskID));
+	std::string dir = getJobDirectory(SECOND_ID(taskID)) + SEPARATOR + std::to_string(FIRST_ID(taskID));
 
 	if (!directoryExists(dir))
 		if (!createDirectory(dir))
@@ -52,6 +54,6 @@ void ClientFileManager::removeJobData(ID_t jobID) {
 }
 
 bool ClientFileManager::checkTaskFile(doubleID_t taskID, const std::string& fileName) {
-	std::string filePath = getTaskDirectory(taskID) + "/" + fileName;
+	std::string filePath = getTaskDirectory(taskID) + SEPARATOR + fileName;
 	return fileExists(filePath);
 }
