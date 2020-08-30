@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8f1fca43-c680-41e5-87d1-290528bb9227}</ProjectGuid>
-    <RootNamespace>StrategusCore</RootNamespace>
+    <ProjectGuid>{4c199494-c3ac-4a10-807e-a5561a15ba0b}</ProjectGuid>
+    <RootNamespace>StrategusServer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -116,7 +116,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,26 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DataClasses\TaskInfo.h" />
-    <ClInclude Include="Definitions.h" />
-    <ClInclude Include="FileManager.h" />
-    <ClInclude Include="IMemoryManager.h" />
-    <ClInclude Include="DataClasses\JobInfo.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="SSP\SSP_Packet.h" />
-    <ClInclude Include="SSP\SSP_PacketFactory.h" />
-    <ClInclude Include="DataClassFactories.h" />
-    <ClInclude Include="Utils.h" />
+    <ClCompile Include="Job.cpp" />
+    <ClCompile Include="StrategusServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataClasses\TaskInfo.cpp" />
-    <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="DataClasses\JobInfo.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="SSP\SSP_Packet.cpp" />
-    <ClCompile Include="SSP\SSP_PacketFactory.cpp" />
-    <ClCompile Include="DataClassFactories.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ProjectReference Include="..\StrategusCore\StrategusCore.vcxproj">
+      <Project>{8f1fca43-c680-41e5-87d1-290528bb9227}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Job.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

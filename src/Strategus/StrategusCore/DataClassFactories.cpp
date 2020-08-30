@@ -1,5 +1,8 @@
-#include "TaskInfoFactory.h"
+#include "DataClassFactories.h"
 #include <string>
+
+//////////////////
+// TaskInfoFactory
 
 TaskInfoFactory::TaskInfoFactory(IMemoryManager* memManager) {
     this->memManager = memManager;
@@ -76,4 +79,64 @@ TaskInfo* TaskInfoFactory::createTaskInfo(doubleID_t ID, const char* name, const
 
 void TaskInfoFactory::destroyTaskInfo(TaskInfo* ti) {
     memManager->releaseMemoryBlock((uint8*)ti);
+}
+
+/////////////////
+// JobInfoFactory
+
+JobInfoFactory::JobInfoFactory(IMemoryManager* memMan) {
+    memManager = memMan;
+}
+
+/*Structure of JobInfo object in memory:
+* Part:   | JobInfo class   | name             | file* arr                 | files arr      |
+* Size:   | sizeof(JobInfo) | strlen(name) + 1 | sizeof(char*) * fileCount | sum of strlens |
+*/
+
+JobInfo* JobInfoFactory::createJobInfo(ID_t ID, ID_t userID, const char* name, uint16 fileCount, const char** files) {
+    uint32 objectSize = sizeof(JobInfo);
+
+    //Calculate size of the final object
+    //strlen returns the lenght of the string without the null terminator, but it has to be included too. So +1 has to be added for all strings.
+    objectSize += strlen(name) + 1;
+    objectSize += sizeof(char*) * fileCount;
+    for (int i = 0; i < fileCount; i++) {
+        objectSize += strlen(files[i]) + 1;
+    }
+
+    //Allocate memory for it
+    uint8* ptr = memManager->getMemoryBlock(objectSize);
+    JobInfo* ji = (JobInfo*)ptr;
+
+    //Copy the data
+    ji->jobID = ID;
+    ji->userID = userID;
+    ji->fileCount = fileCount;
+    ji->size = objectSize;
+
+    size_t size = 0;
+    //Copy name
+    ptr += sizeof(JobInfo);
+    size = strlen(name) + 1;
+    memcpy(ptr, name, size);
+    ji->name = (char*)ptr;
+    ptr += size;
+
+    //Copy file names
+    char** fileArr = (char**)ptr;
+    ptr += sizeof(char*) * fileCount;
+    for (int i = 0; i < fileCount; i++) {
+        size = strlen(files[i]) + 1;
+        fileArr[i] = (char*)ptr;
+        memcpy(ptr, files[i], size);
+        ptr += size;
+    }
+    ji->files = fileArr;
+
+    //Return pointer to the instance
+    return ji;
+}
+
+void JobInfoFactory::destroyJobInfo(JobInfo* ji) {
+    memManager->releaseMemoryBlock((uint8*)ji);
 }

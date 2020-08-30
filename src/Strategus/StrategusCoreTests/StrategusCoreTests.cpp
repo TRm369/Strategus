@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
-#include "../StrategusCore/TaskInfoFactory.h"
+#include "../StrategusCore/DataClassFactories.h"
 #include "DummyMemoryManager.h"
 #include "../StrategusCore/SSP/SSP_PacketFactory.h"
 
@@ -66,6 +66,55 @@ namespace StrategusCoreTests
 			Assert::IsTrue(strcmp(ti->getOutputFile(1), "outFile2") == 0);
 
 			tif.destroyTaskInfo(ti);
+		}
+	};
+
+	TEST_CLASS(JobInfoTests) {
+	public:
+		JobInfoFactory jif;
+		IMemoryManager* memMan;
+
+		JobInfoTests() : jif(memMan = new DummyMemoryManager()) {}
+
+		TEST_METHOD(Create) {
+			ID_t ID = 0xB00B1E5;
+			ID_t userID = 0xDECAFBAD;
+			const char* name = "jobName";
+			uint16 fileCount = 2;
+			const char** files = new const char*[] {"file1", "file2"};
+
+			JobInfo* ji = jif.createJobInfo(ID, userID, name, fileCount, files);
+
+			Assert::AreEqual<uint32>(ji->getID(), ID);
+			Assert::AreEqual<uint32>(ji->getUserID(), userID);
+			Assert::AreEqual<uint32>(ji->getFileCount(), fileCount);
+			Assert::IsTrue(strcmp(ji->getFileName(0), files[0]) == 0);
+			Assert::IsTrue(strcmp(ji->getFileName(1), files[1]) == 0);
+
+			jif.destroyJobInfo(ji);
+		}
+
+		TEST_METHOD(Copy) {
+			ID_t ID = 0xB00B1E5;
+			ID_t userID = 0xDECAFBAD;
+			const char* name = "jobName";
+			uint16 fileCount = 2;
+			const char** files = new const char* [] {"file1", "file2"};
+
+			JobInfo* orig = jif.createJobInfo(ID, userID, name, fileCount, files);
+			size_t size = orig->getSize();
+			JobInfo* ji = (JobInfo*)memMan->getMemoryBlock(size);
+			memcpy(ji, orig, size);
+			jif.destroyJobInfo(orig);
+			ji->recalculatePointers();
+
+			Assert::AreEqual<uint32>(ji->getID(), ID);
+			Assert::AreEqual<uint32>(ji->getUserID(), userID);
+			Assert::AreEqual<uint32>(ji->getFileCount(), fileCount);
+			Assert::IsTrue(strcmp(ji->getFileName(0), files[0]) == 0);
+			Assert::IsTrue(strcmp(ji->getFileName(1), files[1]) == 0);
+
+			jif.destroyJobInfo(ji);
 		}
 	};
 

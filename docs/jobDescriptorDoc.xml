@@ -1,0 +1,15 @@
+<job>
+	<name>Job name</name>
+	<user>Username</user>
+	<jobFiles>
+		<jobFile>Path/to/job.file</jobFile>
+	</jobFiles>
+	<taskList>
+		<task>
+			<name>Task name</name>
+			<command>Task command</command>
+			<inputFile>Path/to/input.file</inputFile>
+			<outputFile>output.file</outputFile>
+		</task>
+	</taskList>
+</job>

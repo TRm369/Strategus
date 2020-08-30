@@ -1,6 +1,7 @@
 #pragma once
 #include "../Definitions.h"
 
+/// Description of a task shared between compute node and scheduler.
 class TaskInfo {
 	friend class TaskInfoFactory;
 public:
@@ -40,7 +41,7 @@ public:
 	///Returns the size of this object (including all data appended to it).
 	uint32 getSize();
 
-	/// Recalculates all pointers after the object has been moved to a different address in memory
+	/// Recalculates all pointers after the object has been moved to a different address in memory (eg. after a network transmit).
 	void recalculatePointers();
 	
 	/// Creates a doubleID from separate job and task ID.

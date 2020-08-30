@@ -50,7 +50,7 @@ void TaskInfo::recalculatePointers() {
 	char* ptr = (char*)this;
 	ptr += sizeof(TaskInfo);
 
-	//For layout of data appended to the object se TaskInfoFactory.cpp
+	//For layout of data appended to the object se DataClassFactories.cpp
 
 	//Name and command
 	name = ptr;

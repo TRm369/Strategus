@@ -3,7 +3,7 @@
 #include <CppUnitTestAssert.h>
 #include "../Config.h"
 #include "../Task.h"
-#include "../../StrategusCore/TaskInfoFactory.h"
+#include "../../StrategusCore/DataClassFactories.h"
 #include"../../StrategusCoreTest/DummyMemoryManager.h"
 #include <filesystem>
 #include "../../StrategusCore/Utils.h"
