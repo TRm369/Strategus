@@ -15,6 +15,17 @@ Job::Job(const char* descFile, ID_t id, IMemoryManager* memoryManager, IUserMana
 	//TODO: init taskStatus
 }
 
+Job::Job(const char* descFile, const char* statusFile, IMemoryManager* memoryManager, IUserManager* userManager)
+	: tif(memoryManager), jif(memoryManager) {
+	memMan = memoryManager;
+
+	//Contents of status file get loaded
+	ID_t jobID = readStatusFile(statusFile);
+
+	//Contents of descriptor file get loaded
+	readDescriptorFile(descFile, jobID, userManager);
+}
+
 JobInfo* Job::getJobInfo() {
 	return jobInfo;
 }
@@ -29,6 +40,13 @@ TaskInfo* Job::getTaskByID(ID_t id) {
 	return tasks[id];
 }
 
+taskStatus_t Job::getTaskStatus(ID_t id) {
+	if (id >= taskCount)
+		return STATUS_COMPLETE;
+
+	return taskStatus[id];
+}
+
 void Job::saveStatus(const char* file) {
 	std::ofstream statusFile(file, std::ofstream::out | std::ofstream::binary | std::ofstream::trunc);
 
@@ -38,6 +56,10 @@ void Job::saveStatus(const char* file) {
 	//Write job ID
 	ID_t jobID = jobInfo->getID();
 	statusFile.write((char*)&jobID, sizeof(ID_t));
+
+	//Write task count
+	uint64 taskCnt = taskCount;
+	statusFile.write((char*)&taskCnt, sizeof(uint64));
 
 	//Write task status
 	statusFile.write((char*)taskStatus, taskCount * sizeof(taskStatus_t));
@@ -124,7 +146,13 @@ ID_t Job::readStatusFile(const char* filename) {
 	ID_t jobID;
 	statusFile.read((char*)&jobID, sizeof(jobID));
 
+	//Read task count
+	uint64 taskCnt;
+	statusFile.read((char*)&taskCnt, sizeof(uint64));
+	taskCount = taskCnt;
+
 	//Read task status
+	taskStatus = new taskStatus_t[taskCount];
 	statusFile.read((char*)taskStatus, taskCount * sizeof(taskStatus_t));
 
 	if (!statusFile)

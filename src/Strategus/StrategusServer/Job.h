@@ -28,7 +28,7 @@ public:
 	/// <param name="descFile">Path to descriptor file.</param>
 	/// <param name="statusFile">Path to status file.</param>
 	/// <param name="memoryManager">Memory manager to use for storing data.</param>
-	/// /// <param name="userManager">User manager to use for username translation.</param>
+	/// <param name="userManager">User manager to use for username translation.</param>
 	Job(const char* descFile, const char* statusFile, IMemoryManager* memoryManager, IUserManager* userManager);
 
 	/// Returns job information.
@@ -48,6 +48,9 @@ public:
 
 	/// Returns a task by id. If the id is invalid, returns nullptr.
 	TaskInfo* getTaskByID(ID_t id);
+
+	/// Returns task's status. If the id is invalid, returns STATUS_COMPLETE.
+	taskStatus_t getTaskStatus(ID_t id);
 
 	/// Returns a pointer to a task that hasn't been yet assigned and flags it as assigned.
 	TaskInfo* getUnassignedTask();
