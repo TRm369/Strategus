@@ -11,7 +11,7 @@ Job::Job(const char* descFile, ID_t id, IMemoryManager* memoryManager, IUserMana
 	readDescriptorFile(descFile, id, userManager);
 
 	//Contents of status file get created
-	taskStatus = new taskStatus_t[taskCount];
+	taskStatus = (taskStatus_t*)memMan->allocateArray(taskCount, sizeof(taskStatus_t));
 	//TODO: init taskStatus
 }
 
@@ -93,7 +93,7 @@ void Job::readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManage
 	//Read tasks
 	pt::ptree taskTree = tree.get_child("taskList");
 	taskCount = taskTree.size();
-	tasks = new TaskInfo* [taskCount];
+	tasks = (TaskInfo**)memMan->allocateArray(taskCount, sizeof(TaskInfo*));
 	readCount = 0;
 	for (pt::ptree::iterator i = taskTree.begin(); i != taskTree.end(); i++) {
 		tasks[readCount] = readTaskInfo(i->second, readCount);
@@ -152,7 +152,7 @@ ID_t Job::readStatusFile(const char* filename) {
 	taskCount = taskCnt;
 
 	//Read task status
-	taskStatus = new taskStatus_t[taskCount];
+	taskStatus = (taskStatus_t*)memMan->allocateArray(taskCount, sizeof(taskStatus_t));
 	statusFile.read((char*)taskStatus, taskCount * sizeof(taskStatus_t));
 
 	if (!statusFile)

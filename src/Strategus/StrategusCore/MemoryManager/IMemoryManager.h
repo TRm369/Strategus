@@ -14,5 +14,5 @@ public:
 	virtual void releaseMemoryBlock(uint8* block) = 0;
 
 	///Alocates a block of memory for an array.
-	
+	virtual uint8* allocateArray(size_t arraySize, size_t objectSize) = 0;
 };
