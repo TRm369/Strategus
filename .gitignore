@@ -33,3 +33,4 @@ packages/
 docs/doxygen/
 *.dll
 boost/
+Test/

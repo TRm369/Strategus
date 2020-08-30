@@ -1,5 +1,9 @@
 #pragma once
-#include "../StrategusCore/DataClasses/TaskInfo.h"
+#include "pch.h"
+#include <boost/property_tree/ptree.hpp>
+#include "../StrategusCore/DataClassFactories.h"
+#include "../StrategusCore/MemoryManager/IMemoryManager.h"
+#include "UserManager/IUserManager.h"
 
 //Type for representing the status of a task.
 typedef uint32 taskStatus_t;
@@ -14,10 +18,21 @@ typedef uint32 taskStatus_t;
 class Job {
 public:
 	/// Creates a new Job from its descriptor file and assigns it an ID.
-	Job(const char* descFile, ID_t id);
+	/// <param name="descFile">Path to descriptor file.</param>
+	/// <param name="id">ID of the Job.</param>
+	/// <param name="memoryManager">Memory manager to use for storing data.</param>
+	/// <param name="userManager">User manager to use for username translation.</param>
+	Job(const char* descFile, ID_t id, IMemoryManager* memoryManager, IUserManager* userManager);
 
 	/// Loads an already existing Job from its descriptor and status file.
-	Job(const char* descFile, const char* statusFile);
+	/// <param name="descFile">Path to descriptor file.</param>
+	/// <param name="statusFile">Path to status file.</param>
+	/// <param name="memoryManager">Memory manager to use for storing data.</param>
+	/// /// <param name="userManager">User manager to use for username translation.</param>
+	Job(const char* descFile, const char* statusFile, IMemoryManager* memoryManager, IUserManager* userManager);
+
+	/// Returns job information.
+	JobInfo* getJobInfo();
 
 	/// Checks all tasks for expired deadlines.
 	bool update();
@@ -28,6 +43,12 @@ public:
 	/// Sets task's status.
 	void setTaskStatus(ID_t task, taskStatus_t status);
 
+	/// Returns the number of tasks in this Job.
+	size_t getTaskCount();
+
+	/// Returns a task by id. If the id is invalid, returns nullptr.
+	TaskInfo* getTaskByID(ID_t id);
+
 	/// Returns a pointer to a task that hasn't been yet assigned and flags it as assigned.
 	TaskInfo* getUnassignedTask();
 
@@ -35,9 +56,25 @@ public:
 	void saveStatus(const char* file);
 
 private:
-	
+	//Contents of descriptor file (except for existing ID).
+	JobInfo* jobInfo;
 	size_t taskCount;
-	taskStatus_t* taskStatus;
 	TaskInfo** tasks;
+
+	//Contents of status file (plus existing ID).
+	taskStatus_t* taskStatus;
+
+	IMemoryManager* memMan;
+	JobInfoFactory jif;
+	TaskInfoFactory tif;
+
+	/// Loads data from descriptor file. Creates the jobInfo instance.
+	void readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager);
+
+	/// Reads TaskInfo from a ptree node.
+	TaskInfo* readTaskInfo(boost::property_tree::ptree& node, ID_t taskId);
+
+	/// Loads data from status file. Returns loaded job ID.
+	ID_t readStatusFile(const char* statusFile);
 };
 

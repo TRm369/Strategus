@@ -1,5 +1,5 @@
 #pragma once
-#include "../IMemoryManager.h"
+#include "../MemoryManager/IMemoryManager.h"
 #include "SSP_Packet.h"
 
 class SSP_PacketFactory {

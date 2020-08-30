@@ -1,5 +1,5 @@
 #pragma once
-#include "../StrategusCore/IMemoryManager.h"
+#include "IMemoryManager.h"
 class DummyMemoryManager : public IMemoryManager{
 public:
 	///Allocates a block of memory of given size

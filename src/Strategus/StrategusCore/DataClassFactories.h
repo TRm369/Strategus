@@ -1,7 +1,7 @@
 #pragma once
 #include "DataClasses/TaskInfo.h"
 #include "DataClasses/JobInfo.h"
-#include "IMemoryManager.h"
+#include "MemoryManager/IMemoryManager.h"
 
 class TaskInfoFactory {
 public:

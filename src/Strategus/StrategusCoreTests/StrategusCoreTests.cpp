@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "../StrategusCore/DataClassFactories.h"
-#include "DummyMemoryManager.h"
+#include "../StrategusCore/MemoryManager/DummyMemoryManager.h"
 #include "../StrategusCore/SSP/SSP_PacketFactory.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
