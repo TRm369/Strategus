@@ -10,7 +10,7 @@ typedef uint32 taskStatus_t;
 //Unless it's one of the special values, represents time by which the task has to be completed.
 
 //Task ready to be assigned
-#define STATUS_NEW 0
+#define STATUS_UNASSIGNED 0
 //Task completed
 #define STATUS_COMPLETE 1
 

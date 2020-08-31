@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Job.h"
+#include "../StrategusCore/Utils.h"
+
+//TODO: task managing in a more intelligent way.
 
 namespace pt = boost::property_tree;
 
@@ -30,6 +33,34 @@ JobInfo* Job::getJobInfo() {
 	return jobInfo;
 }
 
+bool Job::update() {
+	//TODO: optimize
+	uint32 currTime = Utils::getUTCtime();
+	bool complete = true;
+	for (size_t i = 0; i < taskCount; i++) {
+		//If the status isn't special code and is expired, mark it unassigned.
+		if (taskStatus[i] > STATUS_COMPLETE && currTime > taskStatus[i])
+			taskStatus[i] = STATUS_UNASSIGNED;
+
+		complete &= taskStatus[i] == STATUS_COMPLETE;
+	}
+
+	return complete;
+}
+
+bool Job::isComplete() {
+	//TODO: optimize
+	bool complete = true;
+	for (size_t i = 0; i < taskCount; i++) {
+		complete &= taskStatus[i] == STATUS_COMPLETE;
+	}
+	return complete;
+}
+
+void Job::setTaskStatus(ID_t task, taskStatus_t status) {
+	taskStatus[task] = status;
+}
+
 size_t Job::getTaskCount() {
 	return taskCount;
 }
@@ -45,6 +76,14 @@ taskStatus_t Job::getTaskStatus(ID_t id) {
 		return STATUS_COMPLETE;
 
 	return taskStatus[id];
+}
+
+TaskInfo* Job::getUnassignedTask() {
+	//TODO: optimize
+	for (size_t i = 0; i < taskCount; i++) {
+		if (taskStatus[i] == STATUS_UNASSIGNED)
+			return tasks[i];
+	}
 }
 
 void Job::saveStatus(const char* file) {

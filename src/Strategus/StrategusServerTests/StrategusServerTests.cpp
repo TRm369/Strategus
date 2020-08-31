@@ -77,5 +77,18 @@ namespace StrategusServerTests
 			}
 			Assert::IsTrue(same);
 		}
+
+		TEST_METHOD(UpdateAndComplete) {
+			Job job("testJob.xml", "testStatus.bin", memMan, userMan);
+
+			Assert::IsFalse(job.isComplete());
+			job.setTaskStatus(0, 0xFFFFFFFF);
+			Assert::IsFalse(job.update());
+			job.setTaskStatus(0, 2);
+			job.update();
+			Assert::IsTrue(job.getTaskStatus(0) == STATUS_UNASSIGNED);
+			job.setTaskStatus(0, STATUS_COMPLETE);
+			Assert::IsTrue(job.isComplete());
+		}
 	};
 }
