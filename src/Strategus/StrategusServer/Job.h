@@ -27,9 +27,10 @@ public:
 	/// Loads an already existing Job from its descriptor and status file.
 	/// <param name="descFile">Path to descriptor file.</param>
 	/// <param name="statusFile">Path to status file.</param>
+	/// <param name="id">ID of the Job.</param>
 	/// <param name="memoryManager">Memory manager to use for storing data.</param>
 	/// <param name="userManager">User manager to use for username translation.</param>
-	Job(const char* descFile, const char* statusFile, IMemoryManager* memoryManager, IUserManager* userManager);
+	Job(const char* descFile, const char* statusFile, ID_t id, IMemoryManager* memoryManager, IUserManager* userManager);
 
 	/// Returns job information.
 	JobInfo* getJobInfo();
@@ -58,6 +59,8 @@ public:
 	/// Saves the status of this Job to a file.
 	void saveStatus(const char* file);
 
+	~Job();
+
 private:
 	//Contents of descriptor file (except for existing ID).
 	JobInfo* jobInfo;
@@ -78,6 +81,6 @@ private:
 	TaskInfo* readTaskInfo(boost::property_tree::ptree& node, ID_t taskId);
 
 	/// Loads data from status file. Returns loaded job ID.
-	ID_t readStatusFile(const char* statusFile);
+	void readStatusFile(const char* statusFile);
 };
 

@@ -198,6 +198,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\StrategusCoreTests\DummyMemoryManager.h" />
+    <ClInclude Include="DataClasses\ClientInfo.h" />
     <ClInclude Include="DataClasses\TaskInfo.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="FileManager.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataClasses\ClientInfo.cpp" />
     <ClCompile Include="DataClasses\TaskInfo.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="DataClasses\JobInfo.cpp" />

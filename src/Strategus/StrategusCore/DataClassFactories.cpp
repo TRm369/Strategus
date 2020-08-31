@@ -140,3 +140,35 @@ JobInfo* JobInfoFactory::createJobInfo(ID_t ID, ID_t userID, const char* name, u
 void JobInfoFactory::destroyJobInfo(JobInfo* ji) {
     memManager->releaseMemoryBlock((uint8*)ji);
 }
+
+////////////////////
+// ClientInfoFactory
+
+ClientInfoFactory::ClientInfoFactory(IMemoryManager* memMan) {
+    memManager = memMan;
+}
+
+/*Structure of ClientInfo object in memory:
+* Part:   | ClientInfo class   | flags arr                  |
+* Size:   | sizeof(ClientInfo) | flagCount * sizeof(uint64) |
+*/
+
+ClientInfo* ClientInfoFactory::createClientInfo(ID_t ID, uint16 flagCount, uint64* flags) {
+    size_t size = sizeof(ClientInfo) + flagCount * sizeof(uint64);
+    uint8* ptr = memManager->getMemoryBlock(size);
+    ClientInfo* ci = (ClientInfo*)ptr;
+
+    ptr += sizeof(ClientInfo);
+    memcpy(ptr, flags, flagCount * sizeof(uint64));
+
+    ci->clientID = ID;
+    ci->flagCount = flagCount;
+    ci->flags = (uint64*)ptr;
+    ci->size = size;
+
+    return ci;
+}
+
+void ClientInfoFactory::destroyClientInfo(ClientInfo* ci) {
+    memManager->releaseMemoryBlock((uint8*)ci);
+}

@@ -1,8 +1,10 @@
 #pragma once
 #include "DataClasses/TaskInfo.h"
 #include "DataClasses/JobInfo.h"
+#include "DataClasses/ClientInfo.h"
 #include "MemoryManager/IMemoryManager.h"
 
+/// Factory class for TaskInfo objects.
 class TaskInfoFactory {
 public:
 	TaskInfoFactory(IMemoryManager* memManager);
@@ -27,6 +29,7 @@ private:
 	IMemoryManager* memManager;
 };
 
+/// Factory class for JobInfo objects.
 class JobInfoFactory {
 public:
 	JobInfoFactory(IMemoryManager* memManager);
@@ -43,6 +46,25 @@ public:
 
 	///Destroys an instance of JobInfo previously created by this Factory.
 	void destroyJobInfo(JobInfo* ji);
+
+private:
+	IMemoryManager* memManager;
+};
+
+/// Factory class for ClientInfo objects.
+class ClientInfoFactory {
+public:
+	ClientInfoFactory(IMemoryManager* memManager);
+
+	/// <summary>
+	/// Creates a ClientInfo object from given data. To delete the object use destroyClientInfo().
+	/// </summary>
+	/// <param name="flagCount">Number of client's flags.</param>
+	/// <param name="flags">Client's flags.</param>
+	ClientInfo* createClientInfo(ID_t ID, uint16 flagCount, uint64* flags);
+
+	///Destroys an instance of JobInfo previously created by this Factory.
+	void destroyClientInfo(ClientInfo* ci);
 
 private:
 	IMemoryManager* memManager;

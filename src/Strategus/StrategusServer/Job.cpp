@@ -18,15 +18,15 @@ Job::Job(const char* descFile, ID_t id, IMemoryManager* memoryManager, IUserMana
 	//TODO: init taskStatus
 }
 
-Job::Job(const char* descFile, const char* statusFile, IMemoryManager* memoryManager, IUserManager* userManager)
+Job::Job(const char* descFile, const char* statusFile, ID_t id, IMemoryManager* memoryManager, IUserManager* userManager)
 	: tif(memoryManager), jif(memoryManager) {
 	memMan = memoryManager;
 
-	//Contents of status file get loaded
-	ID_t jobID = readStatusFile(statusFile);
-
 	//Contents of descriptor file get loaded
-	readDescriptorFile(descFile, jobID, userManager);
+	readDescriptorFile(descFile, id, userManager);
+	
+	//Contents of status file get loaded
+	readStatusFile(statusFile);
 }
 
 JobInfo* Job::getJobInfo() {
@@ -92,20 +92,24 @@ void Job::saveStatus(const char* file) {
 	if (!statusFile)
 		throw std::exception("Can't open status file for Job.");
 
-	//Write job ID
-	ID_t jobID = jobInfo->getID();
-	statusFile.write((char*)&jobID, sizeof(ID_t));
-
-	//Write task count
-	uint64 taskCnt = taskCount;
-	statusFile.write((char*)&taskCnt, sizeof(uint64));
-
 	//Write task status
 	statusFile.write((char*)taskStatus, taskCount * sizeof(taskStatus_t));
 
 	if (!statusFile)
 		throw std::exception("Can't write status file for Job.");
 	statusFile.close();
+}
+
+Job::~Job() {
+	//Clen-up ...Info objects
+	jif.destroyJobInfo(jobInfo);
+	for (size_t i = 0; i < taskCount; i++) {
+		tif.destroyTaskInfo(tasks[i]);
+	}
+
+	//Deallocate arrays
+	memMan->releaseArray((uint8*)tasks);
+	memMan->releaseArray((uint8*)taskStatus);
 }
 
 void Job::readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager) {
@@ -175,20 +179,11 @@ TaskInfo* Job::readTaskInfo(pt::ptree& node, ID_t taskId) {
 	return ti;
 }
 
-ID_t Job::readStatusFile(const char* filename) {
+void Job::readStatusFile(const char* filename) {
 	std::ifstream statusFile(filename, std::ifstream::in | std::ifstream::binary);
 
 	if (!statusFile.is_open())
 		throw std::exception("Can't open status file for Job.");
-
-	//Read job ID
-	ID_t jobID;
-	statusFile.read((char*)&jobID, sizeof(jobID));
-
-	//Read task count
-	uint64 taskCnt;
-	statusFile.read((char*)&taskCnt, sizeof(uint64));
-	taskCount = taskCnt;
 
 	//Read task status
 	taskStatus = (taskStatus_t*)memMan->allocateArray(taskCount, sizeof(taskStatus_t));
@@ -197,6 +192,4 @@ ID_t Job::readStatusFile(const char* filename) {
 	if (!statusFile)
 		throw std::exception("Can't read status file for Job.");
 	statusFile.close();
-
-	return jobID;
 }

@@ -39,6 +39,9 @@
     <ClCompile Include="DataClassFactories.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataClasses\ClientInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataClasses\TaskInfo.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MemoryManager\DummyMemoryManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataClasses\ClientInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -40,7 +40,7 @@ namespace StrategusServerTests
 		}
 
 		TEST_METHOD(readStatusFile) {
-			Job job("testJob.xml", "testStatus.bin", memMan, userMan);
+			Job job("testJob.xml", "testStatus.bin", 0, memMan, userMan);
 
 			//Test jobInfo
 			JobInfo* ji = job.getJobInfo();
@@ -62,24 +62,25 @@ namespace StrategusServerTests
 		}
 
 		TEST_METHOD(writeStatusFile) {
-			Job job("testJob.xml", "testStatus.bin", memMan, userMan);
+			Job job("testJob.xml", "testStatus.bin", 0, memMan, userMan);
+			job.setTaskStatus(0, 0xAABBCCDD);
 			job.saveStatus("outputStatus.bin");
 
 			std::ifstream testFile("outputStatus.bin");
 
-			char buf[16];
-			testFile.read(buf, 16);
+			char buf[4];
+			testFile.read(buf, 4);
 			Assert::IsTrue((bool)testFile);
-			char* expected = new char[16]{ 0,0,0,0, 1,0,0,0,0,0,0,0, 17,17,17,17 };
+			char* expected = new char[4]{ (char)0xDD, (char)0xCC, (char)0xBB, (char)0xAA };
 			bool same = true;
-			for (int i = 0; i < 16; i++) {
+			for (int i = 0; i < 4; i++) {
 				same &= buf[i] == expected[i];
 			}
 			Assert::IsTrue(same);
 		}
 
 		TEST_METHOD(UpdateAndComplete) {
-			Job job("testJob.xml", "testStatus.bin", memMan, userMan);
+			Job job("testJob.xml", "testStatus.bin", 0, memMan, userMan);
 
 			Assert::IsFalse(job.isComplete());
 			job.setTaskStatus(0, 0xFFFFFFFF);

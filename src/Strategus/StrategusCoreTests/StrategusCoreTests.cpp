@@ -118,6 +118,51 @@ namespace StrategusCoreTests
 		}
 	};
 
+	TEST_CLASS(ClientInfoTests) {
+	public:
+		ClientInfoFactory cif;
+		IMemoryManager* memMan;
+
+		ClientInfoTests() : cif(memMan = new DummyMemoryManager()) {}
+
+		TEST_METHOD(Create) {
+			ID_t ID = 0xB00B1E5;
+			uint16 flagCount = 2;
+			uint64* flags = new uint64 [] {0xDECAFBAD, 0x123ABC};
+
+			ClientInfo* ci = cif.createClientInfo(ID, flagCount, flags);
+
+			Assert::AreEqual<uint32>(ci->getID(), ID);
+			Assert::AreEqual<uint32>(ci->getFlagCount(), flagCount);
+			for (int i = 0; i < flagCount; i++) {
+				Assert::AreEqual<uint64>(ci->getFlags()[i], flags[i]);
+			}
+
+			cif.destroyClientInfo(ci);
+		}
+
+		TEST_METHOD(Copy) {
+			ID_t ID = 0xB00B1E5;
+			uint16 flagCount = 2;
+			uint64* flags = new uint64[]{ 0xDECAFBAD, 0x123ABC };
+
+			ClientInfo* orig = cif.createClientInfo(ID, flagCount, flags);
+			size_t size = orig->getSize();
+			ClientInfo* ci = (ClientInfo*)memMan->getMemoryBlock(size);
+			memcpy(ci, orig, size);
+			cif.destroyClientInfo(orig);
+			ci->recalculatePointers();
+
+			Assert::AreEqual<uint32>(ci->getID(), ID);
+			Assert::AreEqual<uint32>(ci->getFlagCount(), flagCount);
+			for (int i = 0; i < flagCount; i++) {
+				Assert::AreEqual<uint64>(ci->getFlags()[i], flags[i]);
+			}
+
+			cif.destroyClientInfo(ci);
+		}
+	};
+
 	TEST_CLASS(PacketTests) {
 	public:
 		IMemoryManager* memMan;
