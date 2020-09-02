@@ -30,7 +30,7 @@ namespace ClientTests {
 			return true;
 		}
 
-		TaskInfo* requestTask(std::vector<uint64>& flags) {
+		TaskInfo* requestTask(ClientInfo* ci, ClientFileManager& fileMan) {
 			if (taskCount >= 8)
 				return nullptr;
 			TaskInfo* ti = tif.createTaskInfo(taskCount, "", cmds[taskCount], 0, nullptr, 0, nullptr);
@@ -38,7 +38,7 @@ namespace ClientTests {
 			return ti;
 		}
 
-		bool reportTaskFinished(TaskInfo* task) {
+		bool reportTaskFinished(TaskInfo* task, ClientFileManager& fileMan) {
 			done[task->getTaskID()] = true;
 			tif.destroyTaskInfo(task);
 			return true;

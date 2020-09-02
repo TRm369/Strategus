@@ -1,12 +1,16 @@
 #include "pch.h"
 #include "ClientManager.h"
 #include "../StrategusCore/Utils.h"
+#include "../StrategusCore/MemoryManager/DummyMemoryManager.h"
 
-ClientManager::ClientManager(Config* cfg, IClientConnection* conn) : cfm(cfg->rootDirectory) {
+ClientManager::ClientManager(Config* cfg, IClientConnection* conn) :
+	cfm(cfg->rootDirectory), cif(memMan = new DummyMemoryManager()) {
 	config = cfg;
 	connection = conn;
+	CI = cif.createClientInfo(0, config->flags.size(), config->flags.data());
 
 	slotsUsed = 0;
+	stopCtl = false;
 }
 
 void ClientManager::start() {
@@ -43,8 +47,10 @@ void ClientManager::controlCycle(ClientManager* cliMan) {
 			std::lock_guard guard(cliMan->mutex);
 
 			//Control signals
-			if (cliMan->stopCtl)
+			if (cliMan->stopCtl) {
+				cliMan->stopCtl = false;
 				break;
+			}
 
 
 			Task* finishedTask = nullptr;
@@ -66,7 +72,7 @@ void ClientManager::controlCycle(ClientManager* cliMan) {
 
 			//Request new task if slot available
 			if (cliMan->config->availableSlots > cliMan->slotsUsed) {
-				TaskInfo* ti = cliMan->connection->requestTask(cliMan->config->flags);
+				TaskInfo* ti = cliMan->connection->requestTask(cliMan->CI, cliMan->cfm);
 				if (ti != nullptr) {
 					createTask(cliMan, ti);
 				}
@@ -83,7 +89,7 @@ void ClientManager::controlCycle(ClientManager* cliMan) {
 
 void ClientManager::submitTask(ClientManager* cliMan, Task* task) {
 	//Report the task to the server and upload output files
-	cliMan->connection->reportTaskFinished(task->getTaskInfo());
+	cliMan->connection->reportTaskFinished(task->getTaskInfo(), cliMan->cfm);
 
 	//Clean-up it's files
 	cliMan->cfm.removeTaskData(task->getTaskInfo()->getFullID());

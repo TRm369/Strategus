@@ -5,6 +5,7 @@
 #include "ClientFileManager.h"
 #include <thread>
 #include <mutex>
+#include "../StrategusCore/DataClassFactories.h"
 
 /// Contains logic controlling the client.
 class ClientManager {
@@ -20,6 +21,9 @@ public:
 
 private:
 	Config* config;
+	ClientInfoFactory cif;
+	IMemoryManager* memMan;
+	ClientInfo* CI;
 	IClientConnection* connection;
 	ClientFileManager cfm;
 
