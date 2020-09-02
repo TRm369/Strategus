@@ -1,0 +1,52 @@
+<job>
+	<name>8x timeout test</name>
+	<user>Anon</user>
+	<jobFiles></jobFiles>
+	<taskList>
+		<task>
+			<name>Timeout 0</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task>
+		<task>
+			<name>Timeout 1</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task><task>
+			<name>Timeout 2</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task>
+		<task>
+			<name>Timeout 3</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task><task>
+			<name>Timeout 4</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task>
+		<task>
+			<name>Timeout 5</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task><task>
+			<name>Timeout 6</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task>
+		<task>
+			<name>Timeout 7</name>
+			<command>timeout /t 1</command>
+			<inputFiles></inputFiles>
+			<outputFiles></outputFiles>
+		</task>
+	</taskList>
+</job>

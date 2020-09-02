@@ -5,6 +5,7 @@
 #include "../StrategusCore/MemoryManager/DummyMemoryManager.h"
 #include "../StrategusServer/UserManager/DummyUserManager.h"
 #include <fstream>
+#include "../StrategusServer/Scheduler.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -90,6 +91,108 @@ namespace StrategusServerTests
 			Assert::IsTrue(job.getTaskStatus(0) == STATUS_UNASSIGNED);
 			job.setTaskStatus(0, STATUS_COMPLETE);
 			Assert::IsTrue(job.isComplete());
+		}
+	};
+
+	TEST_CLASS(SchedulerTests) {
+		TEST_METHOD(Empty) {
+			Scheduler sch;
+			Assert::IsTrue(sch.requestTask(nullptr) == nullptr);
+			ID_t id = 1234;
+			sch.loadNewJob("testJob.xml", id);
+			Assert::IsTrue(id == 0);
+			sch.loadNewJob("testJob.xml", id);
+			Assert::IsTrue(id == 1);
+		}
+
+		TEST_METHOD(SingleJob) {
+			Scheduler sch;
+			ID_t id = 1234;
+			sch.loadNewJob("8xTimeout.xml", id);
+
+			for (int i = 0; i < 8; i++) {
+				TaskInfo* task = sch.requestTask(nullptr);
+				Assert::IsNotNull(task);
+				sch.taskFinished(task, nullptr);
+			}
+
+			Assert::IsTrue(sch.allJobsComplete());
+		}
+
+		TEST_METHOD(SingleJobMultithread) {
+			Scheduler sch;
+			ID_t id = 1234;
+			sch.loadNewJob("8xTimeout.xml", id);
+			TaskInfo** tasks = new TaskInfo* [8];
+
+			for (int i = 0; i < 8; i++) {
+				tasks[i] = sch.requestTask(nullptr);
+				Assert::IsNotNull(tasks[i]);
+			}
+			for (int i = 0; i < 8; i++) {
+				sch.taskFinished(tasks[i], nullptr);
+			}
+
+			Assert::IsTrue(sch.allJobsComplete());
+		}
+
+		TEST_METHOD(MulitJob) {
+			Scheduler sch;
+			ID_t id = 1234;
+			sch.loadNewJob("8xTimeout.xml", id);
+			sch.loadNewJob("8xTimeout.xml", id);
+
+			for (int i = 0; i < 16; i++) {
+				TaskInfo* task = sch.requestTask(nullptr);
+				Assert::IsNotNull(task);
+				sch.taskFinished(task, nullptr);
+			}
+
+			Assert::IsTrue(sch.allJobsComplete());
+		}
+
+		TEST_METHOD(MultiJobMultithread) {
+			Scheduler sch;
+			ID_t id = 1234;
+			sch.loadNewJob("8xTimeout.xml", id);
+			sch.loadNewJob("8xTimeout.xml", id);
+			TaskInfo** tasks = new TaskInfo * [16];
+
+			for (int i = 0; i < 16; i++) {
+				tasks[i] = sch.requestTask(nullptr);
+				Assert::IsNotNull(tasks[i]);
+			}
+			for (int i = 0; i < 16; i++) {
+				sch.taskFinished(tasks[i], nullptr);
+			}
+
+			Assert::IsTrue(sch.allJobsComplete());
+		}
+
+		TEST_METHOD(Saving) {
+			Scheduler sch;
+			ID_t id = 1234;
+			sch.loadNewJob("8xTimeout.xml", id);
+			sch.loadNewJob("8xTimeout.xml", id);
+
+			for (int i = 0; i < 8; i++) {
+				TaskInfo* task = sch.requestTask(nullptr);
+				Assert::IsNotNull(task);
+				sch.taskFinished(task, nullptr);
+			}
+
+			Assert::IsTrue(sch.allJobsComplete() == false);
+
+			sch.saveStatus("savingTest");
+
+			Scheduler sch2("savingTest");
+			for (int i = 0; i < 8; i++) {
+				TaskInfo* task = sch2.requestTask(nullptr);
+				Assert::IsNotNull(task);
+				sch2.taskFinished(task, nullptr);
+			}
+
+			Assert::IsTrue(sch2.allJobsComplete());
 		}
 	};
 }

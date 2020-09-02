@@ -74,6 +74,9 @@ private:
 	JobInfoFactory jif;
 	TaskInfoFactory tif;
 
+	/// Time clients have to finish tasks in seconds.
+	uint32 taskLength = 24 * 3600;
+
 	/// Loads data from descriptor file. Creates the jobInfo instance.
 	void readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager);
 

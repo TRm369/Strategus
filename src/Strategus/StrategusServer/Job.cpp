@@ -15,7 +15,9 @@ Job::Job(const char* descFile, ID_t id, IMemoryManager* memoryManager, IUserMana
 
 	//Contents of status file get created
 	taskStatus = (taskStatus_t*)memMan->allocateArray(taskCount, sizeof(taskStatus_t));
-	//TODO: init taskStatus
+	for (size_t i = 0; i < taskCount; i++) {
+		taskStatus[i] = STATUS_UNASSIGNED;
+	}
 }
 
 Job::Job(const char* descFile, const char* statusFile, ID_t id, IMemoryManager* memoryManager, IUserManager* userManager)
@@ -81,9 +83,13 @@ taskStatus_t Job::getTaskStatus(ID_t id) {
 TaskInfo* Job::getUnassignedTask() {
 	//TODO: optimize
 	for (size_t i = 0; i < taskCount; i++) {
-		if (taskStatus[i] == STATUS_UNASSIGNED)
+		if (taskStatus[i] == STATUS_UNASSIGNED) {
+			taskStatus[i] = Utils::getUTCtime() + taskLength;
 			return tasks[i];
+		}
 	}
+
+	return nullptr;
 }
 
 void Job::saveStatus(const char* file) {
