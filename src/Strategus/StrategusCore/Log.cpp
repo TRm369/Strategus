@@ -5,6 +5,7 @@
 
 bool Log::isOpen = false;
 std::ofstream Log::file;
+std::string Log::entry;
 
 bool Log::open(const char* filename) {
 	if (file.is_open())
@@ -40,6 +41,38 @@ void Log::logError(const char* error) {
 
 	printTimestamp();
 	file << "ERROR:   " << error << "\n";
+}
+
+void Log::startMessage() {
+	if (entry.empty() == false)
+		endEntry();
+
+	entry += "         ";
+}
+
+void Log::startWarning() {
+	if (entry.empty() == false)
+		endEntry();
+
+	entry += "warning: ";
+}
+
+void Log::startError() {
+	if (entry.empty() == false)
+		endEntry();
+
+	entry += "ERROR:   ";
+}
+
+void Log::endEntry() {
+	if (entry.empty())
+		return;
+	if (!isOpen)
+		open(DEFAULT_FILENAME);
+
+	printTimestamp();
+	file << entry << "\n";
+	entry.clear();
 }
 
 void Log::close() {

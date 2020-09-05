@@ -1,0 +1,9 @@
+#pragma once
+#include <string>
+#include <vector>
+#include <stdexcept>
+#include "../StrategusCore/Definitions.h"
+#include "../StrategusCore/Log.h"
+#include "boost/property_tree/ptree.hpp"
+#include "boost/property_tree/info_parser.hpp"
+#include "boost/foreach.hpp"

@@ -1,8 +1,11 @@
 #pragma once
 #include "pch.h"
 #include "Job.h"
+#include "ServerFileManager.h"
+
 #include "../StrategusCore/MemoryManager/DummyMemoryManager.h"
 #include "UserManager/DummyUserManager.h"
+
 
 // Job and path to its descFile.
 typedef std::pair<Job*, std::string> JobEntry;
@@ -46,6 +49,11 @@ public:
 	/// Returns true iff all Jobs assigned to this scheduler are complete.
 	bool allJobsComplete();
 
+	/// Returns the path to a output file of a task. On fail returns empty string.
+	/// <param name="ti">Pointer to a TaskInfo instance.</param>
+	/// <param name="fileIndex">Index of the file to use.</param>
+	std::string getTaskOutputFile(TaskInfo* ti, uint16 fileIndex);
+
 	/// Saves the status of the scheduler and its Jobs.
 	/// <param name="directory">Path to a directory to save the data into.</param>
 	/// <returns>True iff sucessful.</returns>
@@ -55,9 +63,7 @@ private:
 	std::vector<JobEntry> jobs;
 	DummyMemoryManager memMan;
 	DummyUserManager userMan;
+	ServerFileManager sfm;
 
 	ID_t nextID;
-
-	inline static std::string statFilePath(ID_t jobID, std::string& dir);
-	inline static std::string schedulerDescFilePath(std::string& dir);
 };

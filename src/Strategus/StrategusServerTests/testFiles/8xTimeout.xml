@@ -1,6 +1,7 @@
 <job>
 	<name>8x timeout test</name>
 	<user>Anon</user>
+	<outputDirectory>outDir</outputDirectory>
 	<jobFiles></jobFiles>
 	<taskList>
 		<task>

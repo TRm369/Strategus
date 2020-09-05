@@ -12,6 +12,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <filesystem>
 #include "../StrategusCore/Definitions.h"
 #include "../StrategusCore/Log.h"
 #include "boost/property_tree/ptree.hpp"

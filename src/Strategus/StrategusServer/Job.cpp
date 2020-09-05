@@ -92,6 +92,10 @@ TaskInfo* Job::getUnassignedTask() {
 	return nullptr;
 }
 
+const std::string& Job::getOutputDirectory() {
+	return outputDirectory;
+}
+
 void Job::saveStatus(const char* file) {
 	std::ofstream statusFile(file, std::ofstream::out | std::ofstream::binary | std::ofstream::trunc);
 
@@ -126,6 +130,7 @@ void Job::readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManage
 	//Read info
 	std::string name = tree.get<std::string>("name");
 	std::string username = tree.get<std::string>("user");
+	outputDirectory = tree.get<std::string>("outputDirectory");
 	
 	//Read file list
 	pt::ptree fileTree = tree.get_child("jobFiles");

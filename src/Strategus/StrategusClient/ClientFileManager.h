@@ -1,11 +1,12 @@
 #pragma once
-#include <pch.h>
+#include "pch.h"
 #include "../StrategusCore/FileManager.h"
+#include "../StrategusCore/DataClasses/TaskInfo.h"
 
 /// Class handling storage of job and task files and corresponding directories.
 /// Functions throw errors when unable to create required directories.
 /// Functions returning paths use system's preffered seperator ('\' for win, '/' for linux)
-class ClientFileManager : public FileManager {
+class ClientFileManager : private FileManager {
 public:
 	/// Constructor. rootDirectory is the directory in which data is stored.
 	ClientFileManager(std::string rootDirectory);
@@ -29,6 +30,16 @@ public:
 	/// <param name="fileName">Name of the file (without directories).</param>
 	/// <returns>True iff the file exists.</returns>
 	bool checkTaskFile(doubleID_t taskID, const std::string& fileName);
+
+	/// Returns the path to a output file of a task.
+	/// <param name="ti">ID of the task.</param>
+	/// <param name="fileIndex">Index of the file to use.</param>
+	std::string getTaskOutputFile(TaskInfo* ti, uint16 fileIndex);
+
+	/// Returns the path to a input file of a task.
+	/// <param name="ti">ID of the task.</param>
+	/// <param name="fileIndex">Index of the file to use.</param>
+	std::string getTaskInputFile(TaskInfo* ti, uint16 fileIndex);
 
 private:
 	//Root directory

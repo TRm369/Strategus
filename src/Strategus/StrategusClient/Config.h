@@ -7,7 +7,7 @@
 class Config {
 public:
 	///Reads the config from a file
-	Config(std::string fileName);
+	bool read(const char* fileName);
 
 	///Client flags
 	std::vector<uint64> flags;

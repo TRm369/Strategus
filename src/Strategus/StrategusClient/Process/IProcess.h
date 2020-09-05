@@ -1,5 +1,5 @@
 #pragma once
-#include <pch.h>
+#include "pch.h"
 
 /// Interface abstraction for classes representing subprocesses executing a command in the command line.
 class IProcess {

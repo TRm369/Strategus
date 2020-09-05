@@ -55,7 +55,9 @@ namespace ClientTests {
 
 	TEST_CLASS(ConfigTests) {
 	public:
-		Config cfg = Config("strategus.cfg");
+		Config cfg;
+
+		ConfigTests() { cfg.read("strategus.cfg"); }
 
 		TEST_METHOD(configFlags) {
 			int expectedCount = 6;
@@ -187,7 +189,8 @@ namespace ClientTests {
 	TEST_CLASS(ClientManagerTests) {
 		TEST_METHOD(TasksExecute) {
 			fs::remove_all(".\\client\\data\\0");
-			Config cfg = Config("strategus.cfg");
+			Config cfg;
+			cfg.read("strategus.cfg");
 			DummyConnection* conn = new DummyConnection();
 			ClientManager cm(&cfg, conn);
 

@@ -57,3 +57,13 @@ bool ClientFileManager::checkTaskFile(doubleID_t taskID, const std::string& file
 	std::string filePath = getTaskDirectory(taskID) + SEPARATOR + fileName;
 	return fileExists(filePath);
 }
+
+std::string ClientFileManager::getTaskOutputFile(TaskInfo* ti, uint16 fileIndex) {
+	return getTaskDirectory(ti->getFullID()) + SEPARATOR + ti->getOutputFile(fileIndex);
+}
+
+std::string ClientFileManager::getTaskInputFile(TaskInfo* ti, uint16 fileIndex) {
+	std::string fileName = ti->getInputFile(fileIndex);
+	fileName = fileName.substr(fileName.find_last_of(SEPARATOR) + 1);
+	return getTaskDirectory(ti->getFullID()) + SEPARATOR + fileName;
+}

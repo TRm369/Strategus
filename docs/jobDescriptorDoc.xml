@@ -1,6 +1,7 @@
 <job>
 	<name>Job name</name>
 	<user>Username</user>
+	<outputDirectory>path/to/dir/for/output/files</outputDirectory>
 	<jobFiles>
 		<jobFile>Path/to/job.file</jobFile>
 	</jobFiles>

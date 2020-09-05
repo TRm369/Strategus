@@ -56,6 +56,9 @@ public:
 	/// Returns a pointer to a task that hasn't been yet assigned and flags it as assigned.
 	TaskInfo* getUnassignedTask();
 
+	/// Returns path to a directory to use for saving finished task's data.
+	const std::string& getOutputDirectory();
+
 	/// Saves the status of this Job to a file.
 	void saveStatus(const char* file);
 
@@ -66,6 +69,7 @@ private:
 	JobInfo* jobInfo;
 	size_t taskCount;
 	TaskInfo** tasks;
+	std::string outputDirectory;
 
 	//Contents of status file (plus existing ID).
 	taskStatus_t* taskStatus;

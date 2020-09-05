@@ -3,19 +3,17 @@
 #include <filesystem> //C++17
 
 namespace pt = boost::property_tree;
-namespace fs = std::filesystem;
-
-#define SEPARATOR ((char)fs::path::preferred_separator)
 
 typedef std::vector<JobEntry>::iterator JobEntryIterator;
 
 Scheduler::Scheduler() {
+	jobs = std::vector<JobEntry>();
 	nextID = 0;
 }
 
 Scheduler::Scheduler(std::string directory) : Scheduler() {
 	pt::ptree tree;
-	pt::read_xml(schedulerDescFilePath(directory), tree);
+	pt::read_xml(sfm.schedulerDescFilePath(directory), tree);
 
 	//Load properties
 	nextID = tree.get<ID_t>("nextID");
@@ -27,7 +25,7 @@ Scheduler::Scheduler(std::string directory) : Scheduler() {
 		Job* job;
 		std::string descFile = i->second.get<std::string>("descFile");
 		ID_t id = i->second.get<ID_t>("ID");
-		std::string statFile = statFilePath(id, directory);
+		std::string statFile = sfm.statFilePath(id, directory);
 		job = new Job(descFile.c_str(), statFile.c_str(), id, &memMan, &userMan);
 
 		//Add it to jobs vector.
@@ -104,12 +102,16 @@ bool Scheduler::allJobsComplete() {
 	return true;
 }
 
-bool Scheduler::saveStatus(std::string directory) {
-	//Make sure the directory exists
-	if (!fs::exists(directory))
-		if (!fs::create_directory(directory))
-			throw std::exception("Can't create directory to save Scheduler.");
+std::string Scheduler::getTaskOutputFile(TaskInfo* ti, uint16 fileIndex) {
+	for (JobEntryIterator i = jobs.begin(); i != jobs.end(); i++) {
+		if (i->first->getJobInfo()->getID() == ti->getJobID()) {
+			return sfm.getTaskOutputFile(i->first->getOutputDirectory(), ti, fileIndex);
+		}
+	}
+	return "";
+}
 
+bool Scheduler::saveStatus(std::string directory) {
 	pt::ptree tree;
 
 	tree.put<ID_t>("nextID", nextID);
@@ -123,17 +125,9 @@ bool Scheduler::saveStatus(std::string directory) {
 		tree.add_child("jobs.job", jobTree);
 
 		//Save job status
-		i->first->saveStatus(statFilePath(jobID, directory).c_str());
+		i->first->saveStatus(sfm.statFilePath(jobID, directory).c_str());
 	}
 
-	pt::write_xml(schedulerDescFilePath(directory), tree);
+	pt::write_xml(sfm.schedulerDescFilePath(directory), tree);
 	return true;
-}
-
-inline std::string Scheduler::statFilePath(ID_t jobID, std::string& dir) {
-	return dir + SEPARATOR + std::to_string(jobID) + ".stat";
-}
-
-inline std::string Scheduler::schedulerDescFilePath(std::string& dir) {
-	return dir + SEPARATOR + "scheduler.desc";
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include <pch.h>
 #include "../StrategusCore/DataClasses/TaskInfo.h"
 #include "../StrategusCore/DataClasses/ClientInfo.h"
 #include "ClientFileManager.h"
