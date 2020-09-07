@@ -36,7 +36,12 @@ Scheduler::Scheduler(std::string directory) : Scheduler() {
 bool Scheduler::loadNewJob(std::string descFile, ID_t& jobID) {
 	Job* job;
 	jobID = nextID++;
-	job = new Job(descFile.c_str(), jobID, &memMan, &userMan);
+	try {
+		job = new Job(descFile.c_str(), jobID, &memMan, &userMan);
+	} catch (std::exception ex) {
+		nextID--;
+		return false;
+	}
 
 	//Add it to jobs vector.
 	jobs.push_back(JobEntry(job, descFile));
@@ -53,6 +58,16 @@ bool Scheduler::loadExistingJob(std::string descFile, std::string statusFile, ID
 	jobs.push_back(JobEntry(job, descFile));
 
 	return true;
+}
+
+JobInfo* Scheduler::getJobInfo(ID_t jobID) {
+	for (JobEntryIterator i = jobs.begin(); i != jobs.end(); i++) {
+		if (i->first->getJobInfo()->getID() == jobID) {
+			return i->first->getJobInfo();
+		}
+	}
+
+	return nullptr;
 }
 
 bool Scheduler::removeJob(ID_t jobID) {

@@ -60,7 +60,7 @@ bool WindowsProcess::execute(const std::string& command, const std::string& dire
 	siStartInfo.hStdOutput = g_hChildStd_OUT_Wr;
 	siStartInfo.hStdInput = g_hChildStd_IN_Rd;
 	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
-
+	
 	// Create the child process. 
 	bSuccess = CreateProcess(NULL,
 		wideCommand,     // command line 

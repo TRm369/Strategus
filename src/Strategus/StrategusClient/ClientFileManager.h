@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "../StrategusCore/FileManager.h"
 #include "../StrategusCore/DataClasses/TaskInfo.h"
+#include "../StrategusCore/DataClasses/JobInfo.h"
 
 /// Class handling storage of job and task files and corresponding directories.
 /// Functions throw errors when unable to create required directories.
@@ -40,6 +41,11 @@ public:
 	/// <param name="ti">ID of the task.</param>
 	/// <param name="fileIndex">Index of the file to use.</param>
 	std::string getTaskInputFile(TaskInfo* ti, uint16 fileIndex);
+
+	/// Returns the path to a file of a job.
+	/// <param name="ti">ID of the job.</param>
+	/// <param name="fileIndex">Index of the file to use.</param>
+	std::string getJobFile(JobInfo* ji, uint16 fileIndex);
 
 private:
 	//Root directory

@@ -67,3 +67,9 @@ std::string ClientFileManager::getTaskInputFile(TaskInfo* ti, uint16 fileIndex) 
 	fileName = fileName.substr(fileName.find_last_of(SEPARATOR) + 1);
 	return getTaskDirectory(ti->getFullID()) + SEPARATOR + fileName;
 }
+
+std::string ClientFileManager::getJobFile(JobInfo* ji, uint16 fileIndex) {
+	std::string fileName = ji->getFileName(fileIndex);
+	fileName = fileName.substr(fileName.find_last_of(SEPARATOR) + 1);
+	return getJobDirectory(ji->getID()) + SEPARATOR + fileName;
+}

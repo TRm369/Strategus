@@ -3,6 +3,10 @@
 
 #define DEFAULT_FILENAME "strategus.log"
 
+#define MESSAGE "         "
+#define WARNING "warning: "
+#define ERROR "ERROR:   "
+
 bool Log::isOpen = false;
 std::ofstream Log::file;
 std::string Log::entry;
@@ -24,7 +28,7 @@ void Log::logMessage(const char* message) {
 		open(DEFAULT_FILENAME);
 
 	printTimestamp();
-	file << "         " << message << "\n";
+	file << MESSAGE << message << "\n";
 }
 
 void Log::logWarning(const char* warning) {
@@ -32,7 +36,7 @@ void Log::logWarning(const char* warning) {
 		open(DEFAULT_FILENAME);
 
 	printTimestamp();
-	file << "warning: " << warning << "\n";
+	file << WARNING << warning << "\n";
 }
 
 void Log::logError(const char* error) {
@@ -40,39 +44,43 @@ void Log::logError(const char* error) {
 		open(DEFAULT_FILENAME);
 
 	printTimestamp();
-	file << "ERROR:   " << error << "\n";
+	file << ERROR << error << "\n";
 }
 
-void Log::startMessage() {
-	if (entry.empty() == false)
-		endEntry();
-
-	entry += "         ";
-}
-
-void Log::startWarning() {
-	if (entry.empty() == false)
-		endEntry();
-
-	entry += "warning: ";
-}
-
-void Log::startError() {
-	if (entry.empty() == false)
-		endEntry();
-
-	entry += "ERROR:   ";
-}
-
-void Log::endEntry() {
+void Log::endMessage() {
 	if (entry.empty())
 		return;
 	if (!isOpen)
 		open(DEFAULT_FILENAME);
 
 	printTimestamp();
-	file << entry << "\n";
+	file << MESSAGE << entry << "\n";
 	entry.clear();
+	file.flush();
+}
+
+void Log::endWarning() {
+	if (entry.empty())
+		return;
+	if (!isOpen)
+		open(DEFAULT_FILENAME);
+
+	printTimestamp();
+	file << WARNING << entry << "\n";
+	entry.clear();
+	file.flush();
+}
+
+void Log::endError() {
+	if (entry.empty())
+		return;
+	if (!isOpen)
+		open(DEFAULT_FILENAME);
+
+	printTimestamp();
+	file << ERROR << entry << "\n";
+	entry.clear();
+	file.flush();
 }
 
 void Log::close() {

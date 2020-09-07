@@ -6,18 +6,14 @@
 namespace pt = boost::property_tree;
 
 bool Config::read(const char* fileName) {
-	Log::startMessage();
-	Log() << "Reading config file " << fileName;
-	Log::endEntry();
+	Log::logMessage("Reading config file ", fileName);
 
 	pt::ptree tree;
 	//Open the file
 	try {
 		pt::read_info(fileName, tree);
 	} catch (std::exception ex) {
-		Log::startError();
-		Log() << "Error opening config file " << fileName;
-		Log::endEntry();
+		Log::logError("Error opening config file ", fileName);
 		return false;
 	}
 
@@ -33,9 +29,7 @@ bool Config::read(const char* fileName) {
 		}
 		std::sort(flags.begin(), flags.end());
 	} catch (std::exception ex) {
-		Log::startError();
-		Log() << "Error reading config file " << fileName;
-		Log::endEntry();
+		Log::logError("Error reading config file ", fileName);
 		return false;
 	}
 

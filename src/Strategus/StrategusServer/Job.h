@@ -82,7 +82,7 @@ private:
 	uint32 taskLength = 24 * 3600;
 
 	/// Loads data from descriptor file. Creates the jobInfo instance.
-	void readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager);
+	bool readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager);
 
 	/// Reads TaskInfo from a ptree node.
 	TaskInfo* readTaskInfo(boost::property_tree::ptree& node, ID_t taskId);

@@ -32,6 +32,10 @@ public:
 	/// <returns>True iff sucessfully loaded.</returns>
 	bool loadExistingJob(std::string descFile, std::string statusFile, ID_t& jobID);
 
+	/// Returns a pointer to a JobInfo object for a job with a given ID.
+	/// If the job doesn't exist, returns nullptr.
+	JobInfo* getJobInfo(ID_t jobID);
+
 	///  Removes a Job.
 	/// <returns>True iff sucessful.</returns>
 	bool removeJob(ID_t jobID);

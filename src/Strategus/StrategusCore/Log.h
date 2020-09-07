@@ -12,6 +12,10 @@ public:
 
 	///Log message
 	static void logMessage(const char* message);
+
+	/// Variadic log message
+	template<typename... Ts>
+	static void logMessage(Ts... args);
 	
 	///Log warning
 	static void logWarning(const char* warning);
@@ -19,17 +23,9 @@ public:
 	///Log error
 	static void logError(const char* error);
 
-	/// Prints the beggining of a message entry. Use operator << to append data to the message and endEntry() to append it to the log.
-	/// If there is a previous entry that wasn't ended, it's ended by this function.
-	static void startMessage();
-
-	/// Prints the beggining of a warning entry. Use operator << to append data to the message and endEntry() to append it to the log.
-	/// If there is a previous entry that wasn't ended, it's ended by this function.
-	static void startWarning();
-
-	/// Prints the beggining of a error entry. Use operator << to append data to the message and endEntry() to append it to the log.
-	/// If there is a previous entry that wasn't ended, it's ended by this function.
-	static void startError();
+	/// Variadic log error
+	template<typename... Ts>
+	static void logError(Ts... args);
 
 	/// Appends argument to message started by start...() method.
 	template<typename T>
@@ -39,8 +35,14 @@ public:
 	template<typename T>
 	static void append(T message);
 
-	/// Ends the entry started by start...() method and writes it to the log.
-	static void endEntry();
+	/// Prints all data appended after last end...() call as message.
+	static void endMessage();
+
+	/// Prints all data appended after last end...() call as message.
+	static void endWarning();
+
+	/// Prints all data appended after last end...() call as message.
+	static void endError();
 
 	///Close the log
 	static void close();
@@ -52,7 +54,24 @@ private:
 	static std::string entry;
 
 	static void printTimestamp();
+
+	template<typename... Ts> static void pass(Ts... args) {};
+	template<typename T> static bool prepend(T arg);
 };
+
+template<typename ...Ts>
+inline void Log::logMessage(Ts ...args) {
+	entry.clear();
+	pass(prepend(args)...);
+	endMessage();
+}
+
+template<typename ...Ts>
+inline void Log::logError(Ts ...args) {
+	entry.clear();
+	pass(prepend(args)...);
+	endError();
+}
 
 template<typename T>
 inline Log& Log::operator<<(T message) {
@@ -63,4 +82,10 @@ inline Log& Log::operator<<(T message) {
 template<typename T>
 inline void Log::append(T message) {
 	entry += message;
+}
+
+template<typename T>
+inline bool Log::prepend(T arg) {
+	entry = arg + entry;
+	return true;
 }

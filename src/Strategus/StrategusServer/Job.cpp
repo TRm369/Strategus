@@ -11,7 +11,8 @@ Job::Job(const char* descFile, ID_t id, IMemoryManager* memoryManager, IUserMana
 	memMan = memoryManager;
 
 	//Contents of descriptor file get loaded
-	readDescriptorFile(descFile, id, userManager);
+	if (!readDescriptorFile(descFile, id, userManager))
+		throw std::exception("Failed to create Job.");
 
 	//Contents of status file get created
 	taskStatus = (taskStatus_t*)memMan->allocateArray(taskCount, sizeof(taskStatus_t));
@@ -25,7 +26,8 @@ Job::Job(const char* descFile, const char* statusFile, ID_t id, IMemoryManager* 
 	memMan = memoryManager;
 
 	//Contents of descriptor file get loaded
-	readDescriptorFile(descFile, id, userManager);
+	if (!readDescriptorFile(descFile, id, userManager))
+		throw std::exception("Failed to create Job.");
 	
 	//Contents of status file get loaded
 	readStatusFile(statusFile);
@@ -122,40 +124,65 @@ Job::~Job() {
 	memMan->releaseArray((uint8*)taskStatus);
 }
 
-void Job::readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager) {
+bool Job::readDescriptorFile(const char* descriptorFile, ID_t jobID, IUserManager* userManager) {
+	Log::logMessage("Reading job descriptor file ", descriptorFile);
+
+	//Read descriptor file.
 	pt::ptree tree;
-	pt::read_xml(descriptorFile, tree);
-	tree = tree.get_child("job");
-	
-	//Read info
-	std::string name = tree.get<std::string>("name");
-	std::string username = tree.get<std::string>("user");
-	outputDirectory = tree.get<std::string>("outputDirectory");
-	
-	//Read file list
-	pt::ptree fileTree = tree.get_child("jobFiles");
-	size_t fileCount = fileTree.size();
-	const char** fileNames = new const char* [fileCount];
-	size_t readCount = 0;
-	for (pt::ptree::iterator i = fileTree.begin(); i != fileTree.end(); i++) {
-		fileNames[readCount++] = i->second.data().c_str();
+	try {
+		pt::read_xml(descriptorFile, tree);
+		tree = tree.get_child("job");
+	} catch (std::exception ex) {
+		Log::logError("Failed to read job descriptor file ", descriptorFile);
+		return false;
+	}
+
+	std::string name;
+	std::string username;
+	size_t fileCount;
+	const char** fileNames;
+	size_t readCount;
+	pt::ptree fileTree;
+	try {
+		//Read info
+		name = tree.get<std::string>("name");
+		username = tree.get<std::string>("user");
+		outputDirectory = tree.get<std::string>("outputDirectory");
+
+		//Read file list
+		fileTree = tree.get_child("jobFiles");
+		fileCount = fileTree.size();
+		fileNames = new const char* [fileCount];
+		readCount = 0;
+		for (pt::ptree::iterator i = fileTree.begin(); i != fileTree.end(); i++) {
+			fileNames[readCount++] = i->second.data().c_str();
+		}
+	} catch (std::exception ex) {
+		Log::logError("Failed to parse job descriptor file ", descriptorFile);
+		return false;
 	}
 
 	//Create JobInfo
 	jobInfo = jif.createJobInfo(jobID, userManager->usernameToID(username), name.c_str(), fileCount, fileNames);
 
 	//Read tasks
-	pt::ptree taskTree = tree.get_child("taskList");
-	taskCount = taskTree.size();
-	tasks = (TaskInfo**)memMan->allocateArray(taskCount, sizeof(TaskInfo*));
-	readCount = 0;
-	for (pt::ptree::iterator i = taskTree.begin(); i != taskTree.end(); i++) {
-		tasks[readCount] = readTaskInfo(i->second, readCount);
-		readCount++;
+	try {
+		pt::ptree taskTree = tree.get_child("taskList");
+		taskCount = taskTree.size();
+		tasks = (TaskInfo**)memMan->allocateArray(taskCount, sizeof(TaskInfo*));
+		readCount = 0;
+		for (pt::ptree::iterator i = taskTree.begin(); i != taskTree.end(); i++) {
+			tasks[readCount] = readTaskInfo(i->second, readCount);
+			readCount++;
+		}
+	} catch (std::exception ex) {
+		Log::logError("Failed to parse tasks from job descriptor file ", descriptorFile);
+		return false;
 	}
 
 	//Clen-up
 	delete[] fileNames;
+	return true;
 }
 
 TaskInfo* Job::readTaskInfo(pt::ptree& node, ID_t taskId) {

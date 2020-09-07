@@ -3,7 +3,7 @@
 	<user>Username</user>
 	<outputDirectory>outDir</outputDirectory>
 	<jobFiles>
-		<jobFile>Path/to/job.file</jobFile>
+		<file>Path/to/job.file</file>
 	</jobFiles>
 	<taskList>
 		<task>
